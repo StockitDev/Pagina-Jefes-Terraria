@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#cdddc8">
+  <meta name="description" content="Conoce cómo se construyó Terraria Library con HTML, CSS, JavaScript, Node.js, Express y MySQL.">
+  <title>Sobre el proyecto · Terraria Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="index.html" aria-label="Terraria Library, inicio">
+      <img class="wordmark-icon" src="img/terraria.png" alt="">
+      <span>Terraria <span class="wordmark-divider">/</span> Library</span>
+    </a>
+    <a class="header-link" href="index.html">Volver a la biblioteca</a>
+  </header>
+
+  <main class="page about-page">
+    <section class="intro">
+      <h1>Sobre el proyecto</h1>
+    </section>
+
+    <article class="about-article">
+      <p class="about-lead">Terraria Library muestra información de los jefes desde una base de datos MySQL en una página que puedes buscar. Está construida con herramientas distintas para organizar el contenido, darle diseño, agregar interacción y conectarse a la base de datos.</p>
+
+      <nav class="about-index" aria-label="Secciones del proyecto">
+        <h2>En esta página</h2>
+        <ul>
+          <li><a href="#structure">Estructura de la página</a></li>
+          <li><a href="#design">Diseño visual</a></li>
+          <li><a href="#frontend">Búsqueda y detalles de los jefes</a></li>
+          <li><a href="#backend">La API y MySQL</a></li>
+          <li><a href="#concepts">Funciones y variables</a></li>
+          <li><a href="#json">JSON</a></li>
+          <li><a href="#environment">El archivo .env</a></li>
+          <li><a href="#flow">Cómo llegan los datos</a></li>
+        </ul>
+      </nav>
+
+      <section id="structure" class="about-section">
+        <h2>Estructura de la página</h2>
+        <p>HTML organiza el encabezado, la búsqueda, la lista de jefes y sus detalles. Esta explicación está en una página aparte.</p>
+        <pre><code>&lt;main&gt;
+  &lt;section class="intro"&gt;...&lt;/section&gt;
+  &lt;section class="workspace"&gt;
+    &lt;aside&gt;Lista de jefes&lt;/aside&gt;
+    &lt;article&gt;Detalles del jefe&lt;/article&gt;
+  &lt;/section&gt;
+&lt;/main&gt;</code></pre>
+        <p>Las etiquetas semánticas como <code>main</code>, <code>section</code>, <code>aside</code> y <code>article</code> agrupan el contenido relacionado y hacen que el código sea más fácil de seguir.</p>
+      </section>
+
+      <section id="design" class="about-section">
+        <h2>Diseño visual</h2>
+        <p>CSS define los colores, espacios y tipografía. El verde salvia, el café y la fuente pixelada VT323 dan identidad al sitio.</p>
+        <p>La lista y los detalles usan dos columnas; en pantallas pequeñas, <code>@media</code> las apila.</p>
+        <pre><code>.workspace {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+@media (max-width: 720px) {
+  .workspace { grid-template-columns: 1fr; }
+}</code></pre>
+      </section>
+
+      <section id="frontend" class="about-section">
+        <h2>Búsqueda y detalles de los jefes</h2>
+        <p>JavaScript carga los datos, filtra jefes y muestra sus estadísticas y recompensas. Todo se actualiza sin recargar la página.</p>
+        <pre><code>const response = await fetch(
+  "http://127.0.0.1:3000/api/data"
+);
+const data = await response.json();</code></pre>
+      </section>
+
+      <section id="backend" class="about-section">
+        <h2>La API y MySQL</h2>
+        <p>Un servidor Node.js con Express ofrece <code>/api/data</code>. Consulta seis tablas de MySQL y envía sus registros a la página.</p>
+      </section>
+
+      <section id="concepts" class="about-section">
+        <h2>Funciones y variables</h2>
+        <p>Además de las operaciones básicas, este proyecto usa herramientas para pedir datos, relacionarlos y mostrarlos.</p>
+        <table class="about-table">
+          <tbody>
+            <tr><th><code>fetch()</code> y <code>response.json()</code></th><td>Piden datos a la API y convierten la respuesta JSON en datos de JavaScript.</td></tr>
+            <tr><th><code>filter()</code>, <code>find()</code> y <code>map()</code></th><td>Filtran resultados, encuentran registros relacionados y crean elementos para la lista.</td></tr>
+            <tr><th><code>Promise.all()</code></th><td>Permite consultar varias tablas al mismo tiempo.</td></tr>
+            <tr><th><code>Intl.NumberFormat()</code></th><td>Da formato legible a las estadísticas numéricas.</td></tr>
+            <tr><th><code>data</code></th><td>Guarda los datos recibidos de la API.</td></tr>
+            <tr><th><code>selectedId</code> y <code>query</code></th><td>Guardan el jefe seleccionado y el texto escrito en la búsqueda.</td></tr>
+            <tr><th><code>process.env</code></th><td>Permite al servidor leer su configuración desde variables de entorno.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="json" class="about-section">
+        <h2>¿Qué es JSON?</h2>
+        <p>JSON es un formato de texto para organizar e intercambiar datos. La API lo usa para enviar a la página los jefes y sus registros relacionados.</p>
+        <pre class="json-example"><code>{
+  "bosses": [
+    {
+      "Boss_Name": "King Slime",
+      "Life_Amount": 2000
+    }
+  ]
+}</code></pre>
+        <p>En la respuesta real, <code>bosses</code> y las demás listas contienen los registros leídos desde MySQL.</p>
+      </section>
+
+      <section id="environment" class="about-section">
+        <h2>¿Para qué sirve .env?</h2>
+        <p><code>.env</code> guarda la configuración privada que necesita el backend para conectarse a MySQL, separada del código. Este proyecto lo usa para el servidor, el usuario y la base de datos; la contraseña también puede ir ahí.</p>
+        <pre><code>DB_HOST=localhost
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+DB_NAME=tu_base_de_datos</code></pre>
+        <p>El archivo está excluido de Git para evitar publicar esos datos.</p>
+      </section>
+
+      <section id="flow" class="about-section">
+        <h2>Cómo llegan los datos</h2>
+        <ol>
+          <li>El navegador pide los datos a la API.</li>
+          <li>Express consulta MySQL y devuelve JSON.</li>
+          <li>JavaScript muestra la lista y los detalles.</li>
+        </ol>
+        <p>Así, la página muestra los datos actuales de la base MySQL.</p>
+      </section>
+
+      <aside class="about-summary">
+        <h2>En resumen</h2>
+        <p>HTML organiza el contenido, CSS le da forma a la interfaz, JavaScript agrega interacción y la API de Node.js conecta la página con MySQL.</p>
+      </aside>
+    </article>
+
+    <footer><a href="index.html">Volver a Terraria Library</a></footer>
+  </main>
+</body>
+</html>
