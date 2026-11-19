@@ -12,8 +12,8 @@
     if (!Array.isArray(data.bosses)) throw new Error("The API did not return the boss list.");
   } catch (error) {
     console.error("Could not load data from MySQL.", error);
-    list.innerHTML = '<p class="empty">Could not connect to MySQL.</p>';
-    detail.textContent = "Start MySQL and the server in the backend folder, then reload this page.";
+    list.innerHTML = '<p class="empty">Boss data is currently unavailable.</p>';
+    detail.textContent = "MySQL and the API must be running to load boss data.";
     return;
   }
 
