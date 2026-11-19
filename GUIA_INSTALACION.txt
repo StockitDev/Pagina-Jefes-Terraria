@@ -1,0 +1,43 @@
+GUIA RAPIDA PARA EJECUTAR EL PROYECTO (WINDOWS)
+===============================================
+
+1. Iniciar e importar la base de datos
+---------------------------------------
+- Abre Servicios de Windows y comprueba que el servicio MySQL este iniciado.
+- En MySQL Workbench, conectate al servidor local.
+- Abre y ejecuta el archivo:
+  Base de Datos\Tabla sql Jefes terraria actualizada(terminada2).sql
+
+2. Configurar la conexion
+-------------------------
+En backend, crea un archivo de texto plano llamado exactamente .env y copia lo
+siguiente. No debe tener otra extension: el nombre no puede quedar como
+.env.txt. Si usas el Bloc de notas, elige "Todos los archivos" en "Tipo" al
+guardar y escribe .env como nombre. Cambia el usuario y la contrasena para que
+coincidan con tu MySQL:
+
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=TU_CONTRASENA_DE_MYSQL
+DB_NAME=Jefes_Terraria
+FRONTEND_ORIGINS=http://127.0.0.1:5500,http://localhost:5500
+
+Si el usuario no tiene contrasena, deja DB_PASSWORD= vacio. No compartas el
+archivo .env: contiene credenciales de tu equipo.
+
+3. Instalar dependencias e iniciar el backend
+---------------------------------------------
+Abre PowerShell en la carpeta principal del proyecto y ejecuta:
+
+cd backend
+npm.cmd install
+npm.cmd run dev
+
+Deja abierta la terminal. Cuando aparezca "Servidor listo", la API estara en:
+http://localhost:3000/api/data
+
+Si aparece "Access denied", revisa DB_USER y DB_PASSWORD. Si aparece
+"ECONNREFUSED", inicia MySQL. En PowerShell usa npm.cmd si npm da un error de
+permisos.
